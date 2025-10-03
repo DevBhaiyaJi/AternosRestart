@@ -33,13 +33,11 @@ def restart_server(page):
     page.reload()
     time.sleep(3)
 
-    # Stop if running
     if page.locator("button:has-text('Stop')").count() > 0:
         print("Stopping server...")
         page.locator("button:has-text('Stop')").first.click()
         time.sleep(15)
 
-    # Start again
     if page.locator("button:has-text('Start')").count() > 0:
         print("Starting server...")
         page.locator("button:has-text('Start')").first.click()
