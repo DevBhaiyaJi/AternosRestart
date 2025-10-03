@@ -1,0 +1,26 @@
+name: Auto Restart Codespace
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"   # har 3 ghante Codespace check karega
+  workflow_dispatch:
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Restart Codespace
+        run: |
+          CS_NAME=$(gh codespace list --repo $GITHUB_REPOSITORY --json name,state \
+          | jq -r '.[] | select(.state=="Stopped") | .name')
+          if [ -n "$CS_NAME" ]; then
+            gh codespace start -c "$CS_NAME"
+          else
+            echo "No stopped Codespace found."
+          fi
