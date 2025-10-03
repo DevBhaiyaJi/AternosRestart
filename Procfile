@@ -1,1 +1,1 @@
-worker: playwright install && python bot.py
+worker: python -m playwright install && python bot.py
