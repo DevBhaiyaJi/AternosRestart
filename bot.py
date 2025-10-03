@@ -53,7 +53,6 @@ def main():
         context = browser.new_context()
         page = context.new_page()
 
-        # Load cookies if available
         if not load_cookies(context):
             print("Logging in with email/password...")
             page.goto("https://aternos.org/go/")
